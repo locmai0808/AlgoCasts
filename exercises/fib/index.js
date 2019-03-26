@@ -8,6 +8,28 @@
 // Example:
 //   fib(4) === 3
 
-function fib(n) {}
+function memoize(fn) {
+  const cache = {};
+  return function(...args) {
+    if (cache[args]) {
+      return cache[args];
+    }
+    const result = fn.apply(this, args);
+    cache[args] = result;
+    return result;
+  };
+}
+
+function slowFib(n) {
+  // let res = [0, 1];
+  // for (let i = 2; i <= n; ++i) {
+  //   res[i] = res[i - 2] + res[i - 1];
+  // }
+  // return res[n];
+  if (n < 2) return n;
+  return fib(n - 2) + fib(n - 1);
+}
+
+const fib = memoize(slowFib);
 
 module.exports = fib;
